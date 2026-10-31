@@ -1,0 +1,23 @@
+# Warrior World WEB3 BRAIN — profile config (runs ON Akash, fully self-contained)
+# ⛔ No desktop IPs. The brain routes its own model calls straight to OpenRouter.
+# The mission seed lives in /opt/data/memories/MISSION.md (baked at first boot).
+model:
+  default: deepseek/deepseek-v4-flash-0731
+  provider: openrouter
+  base_url: https://openrouter.ai/api/v1
+  api_key_env: OPENROUTER_API_KEY
+agent:
+  max_turns: 150
+  gateway_timeout: 1800
+  coding_context: auto
+gateway:
+  api_server:
+    enabled: true
+    port: 8642
+    host: 0.0.0.0
+  enabled: true
+memory:
+  files:
+    - /opt/data/memories/MISSION.md
+    - /opt/data/memories/warrior-world-master-brief.md
+    - /opt/data/memories/command-center-audit-2026-10-31.md

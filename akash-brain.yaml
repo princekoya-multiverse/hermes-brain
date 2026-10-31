@@ -1,0 +1,45 @@
+---
+version: "2.0"
+services:
+  brain:
+    image: warriorworld/hermes-brain:20261031
+    env:
+      - HERMES_HOME=/opt/data
+      - OPENROUTER_API_KEY=__OPENROUTER_KEY__
+      - API_SERVER_KEY=__API_SERVER_KEY__
+      - DEEPSEEK_API_KEY=__DEEPSEEK_KEY__
+    expose:
+      - port: 8642
+        as: 8642
+        to:
+          - global: true
+        http_options:
+          max_body_size: 52428800
+          read_timeout: 120000
+          send_timeout: 120000
+profiles:
+  compute:
+    brain:
+      resources:
+        cpu:
+          units: 1.0
+        memory:
+          size: 2Gi
+        storage:
+          size: 10Gi
+  placement:
+    dcloud:
+      attributes:
+        region: us-east
+      signedBy:
+        anyOf:
+          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+      pricing:
+        brain:
+          denom: uakt
+          amount: 6833
+deployment:
+  brain:
+    dcloud:
+      profile: brain
+      count: 1
