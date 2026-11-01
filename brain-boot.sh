@@ -21,13 +21,39 @@ if [ -d /opt/data-seed ] && [ ! -f "$HERMES_HOME/config.yaml" ]; then
   cp -n /opt/data-seed/config.yaml "$HERMES_HOME/config.yaml" 2>/dev/null || true
 fi
 
-# 2) Ensure .env has the model key (injected by the SDL).
+# 2) Root .env: model keys + WEB3 DEPLOY CREDENTIALS (injected by the SDL).
 if [ ! -f "$HERMES_HOME/.env" ]; then
   : > "$HERMES_HOME/.env"
-  [ -n "${OPENROUTER_API_KEY:-}" ] && echo "OPENROUTER_API_KEY=$OPENROUTER_API_KEY" >> "$HERMES_HOME/.env"
-  [ -n "${DEEPSEEK_API_KEY:-}" ] && echo "DEEPSEEK_API_KEY=$DEEPSEEK_API_KEY" >> "$HERMES_HOME/.env"
-  [ -n "${API_SERVER_KEY:-}" ] && echo "API_SERVER_KEY=$API_SERVER_KEY" >> "$HERMES_HOME/.env"
-  [ -n "${LITELLM_MASTER_KEY:-}" ] && echo "LITELLM_MASTER_KEY=$LITELLM_MASTER_KEY" >> "$HERMES_HOME/.env"
+  for V in OPENROUTER_API_KEY DEEPSEEK_API_KEY API_SERVER_KEY LITELLM_MASTER_KEY \
+           STORJ_ACCESS_KEY STORJ_SECRET_KEY STORJ_ENDPOINT STORJ_BUCKET \
+           CF_API_TOKEN CF_ZONE_ID GITHUB_TOKEN; do
+    eval "VAL=\${$V:-}"
+    [ -n "$VAL" ] && echo "$V=$VAL" >> "$HERMES_HOME/.env"
+  done
+fi
+
+# 2b) Every PROFILE gets its own .env with the FULL key set —
+#     multiplex auth + full autonomous powers (model + Web3 deploys).
+if [ -n "${API_SERVER_KEY:-}" ]; then
+  for pd in "$HERMES_HOME"/profiles/*/; do
+    [ -d "$pd" ] || continue
+    if [ ! -f "$pd.env" ]; then
+      echo "[brain-boot] powering profile $(basename "$pd")"
+      echo "API_SERVER_KEY=$API_SERVER_KEY" > "$pd.env"
+      for V in OPENROUTER_API_KEY DEEPSEEK_API_KEY \
+               STORJ_ACCESS_KEY STORJ_SECRET_KEY STORJ_ENDPOINT STORJ_BUCKET \
+               CF_API_TOKEN CF_ZONE_ID GITHUB_TOKEN; do
+        eval "VAL=\${$V:-}"
+        [ -n "$VAL" ] && echo "$V=$VAL" >> "$pd.env"
+      done
+    fi
+  done
+fi
+
+# 2c) Deploy kit — every profile can push to Storj + Cloudflare.
+if [ -d /opt/data-seed/tools ] && [ ! -f "$HERMES_HOME/tools/deploy-assets.py" ]; then
+  cp -rn /opt/data-seed/tools/. "$HERMES_HOME/tools/" 2>/dev/null || true
+  chmod +x "$HERMES_HOME"/tools/*.py 2>/dev/null || true
 fi
 
 # 3) Start the gateway (host gateway serves every profile's API server).

@@ -24,6 +24,14 @@ COPY seed/ /opt/data-seed/
 COPY brain-boot.sh /usr/local/bin/brain-boot.sh
 RUN chmod +x /usr/local/bin/brain-boot.sh
 
+# WEB3 DEPLOY POWER: boto3 so the deploy kit can push to Storj from the brain.
+COPY deploy-requirements.txt /tmp/deploy-requirements.txt
+RUN /opt/hermes/.venv/bin/pip install --no-cache-dir -r /tmp/deploy-requirements.txt || true
+
+# Deploy kit (pure stdlib + boto3) — every manager's power tool.
+COPY tools/deploy-assets.py /opt/data-seed/tools/deploy-assets.py
+RUN chmod +x /opt/data-seed/tools/deploy-assets.py || true
+
 # Inherit the official ENTRYPOINT (entrypoint-dispatch.sh → s6 as PID 1).
 # Main program: /usr/local/bin/brain-boot.sh → runs under s6 supervision.
 CMD ["/usr/local/bin/brain-boot.sh"]
