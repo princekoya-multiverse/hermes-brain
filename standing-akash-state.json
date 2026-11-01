@@ -1,0 +1,49 @@
+{
+  "updated": "2026-11-01T03:00:00Z",
+  "mission": "Command center brain = the ONLY always-on Akash deployment. Web3-only. Desktop = admin, never runtime.",
+  "wallet": {
+    "spendable_act": 7.64,
+    "escrowed_act": 0.50,
+    "total_act": 8.14,
+    "note": "≈2.8 months of brain runtime at current burn; top-up recommended whenever next credits purchase happens"
+  },
+  "open_deployments": [
+    {
+      "name": "silent-planet",
+      "dseq": "1793500262759",
+      "role": "WEB3 BRAIN (always-on chat LLM)",
+      "image": "warriorworld/hermes-brain:20261031d",
+      "ingress": "https://q7megrhj39c0fff9mnqvnd0juo.ingress.akash-palmito.org",
+      "api_server_key": "stored at /opt/data/cache/scratch/brain-api-key.txt AND worker AGENT_KEY binding",
+      "lease_price_uact_per_block": 6.396703,
+      "monthly_cost_act": 2.76,
+      "monthly_cost_usd": 2.76,
+      "escrow_act": 0.50,
+      "replicas": "1/1 running",
+      "health": "200",
+      "completion_proof": "WEB3 BRAIN ACTIVE / READY / ALIVE (200s)",
+      "keep": true
+    }
+  ],
+  "closed_deployments": [
+    {"dseq": "1791857544617", "name": "rustic-dolphin", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1792980702521", "name": "studio-api", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793039795551", "name": "warrior-wealth-club", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793218663455", "name": "warrior-jarvis-production (OLD BRAIN corpse)", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793488824188", "name": "rustic-bison", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793490343125", "name": "brisk-spruce", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793492045783", "name": "bright-lagoon", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793496325342", "name": "noble-zephyr", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793497673461", "name": "crisp-hawk", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793498787628", "name": "lunar-tiger", "closed_at": "2026-11-01T02:30Z"},
+    {"dseq": "1793500213655", "name": "brain (SDL draft, no lease)", "closed_at": "2026-11-01T02:30Z"}
+  ],
+  "worker_bindings": {
+    "count": 11,
+    "AGENT_URL": "https://q7megrhj39c0fff9mnqvnd0juo.ingress.akash-palmito.org",
+    "AGENT_KEY": "API_SERVER_KEY (44 chars) — worker carries it",
+    "verified": "11/11 intact, none missing"
+  },
+  "web3_gate": "ALL GREEN exit=0 — AGENT_URL→Akash, brain 200, manager chat does NOT use local tunnel",
+  "check_command": "/opt/data/cache/scratch/_status_probe.py  (brain health + completion + gate + bindings + leases)"
+}
