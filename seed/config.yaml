@@ -1,0 +1,27 @@
+# Warrior World WEB3 BRAIN — root config (at HERMES_HOME/config.yaml)
+# ⛔ No desktop IPs. The brain routes model calls straight to OpenRouter
+# and serves the OpenAI-compatible API server the worker expects.
+model:
+  default: deepseek/deepseek-v4-flash-0731
+  provider: openrouter
+  base_url: https://openrouter.ai/api/v1
+  api_key_env: OPENROUTER_API_KEY
+agent:
+  max_turns: 150
+  gateway_timeout: 1800
+  coding_context: auto
+gateway:
+  enabled: true
+  platforms: [api_server]
+  api_server:
+    enabled: true
+    host: 0.0.0.0
+    port: 8642
+    max_concurrent_runs: 10
+  message_timestamps:
+    enabled: false
+memory:
+  files:
+    - /opt/data/memories/MISSION.md
+    - /opt/data/memories/warrior-world-master-brief.md
+    - /opt/data/memories/command-center-audit-2026-10-31.md

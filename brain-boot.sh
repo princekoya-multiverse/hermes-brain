@@ -14,6 +14,13 @@ if [ -d /opt/data-seed ] && [ ! -f "$HERMES_HOME/memories/MISSION.md" ]; then
   cp -rn /opt/data-seed/. "$HERMES_HOME/" 2>/dev/null || true
 fi
 
+# 1b) Ensure the ROOT config enables the api_server (the worker's
+#     AGENT_URL expects an OpenAI-compatible completions endpoint).
+if [ -d /opt/data-seed ] && [ ! -f "$HERMES_HOME/config.yaml" ]; then
+  echo "[brain-boot] seeding root config (api_server :8642)"
+  cp -n /opt/data-seed/config.yaml "$HERMES_HOME/config.yaml" 2>/dev/null || true
+fi
+
 # 2) Ensure .env has the model key (injected by the SDL).
 if [ ! -f "$HERMES_HOME/.env" ]; then
   : > "$HERMES_HOME/.env"

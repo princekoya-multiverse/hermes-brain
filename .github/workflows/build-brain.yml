@@ -58,7 +58,7 @@ jobs:
           push: true
           tags: |
             warriorworld/hermes-brain:20261031
-            warriorworld/hermes-brain:20261031b
+            warriorworld/hermes-brain:20261031c
             warriorworld/hermes-brain:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
